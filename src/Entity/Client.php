@@ -26,8 +26,13 @@ class Client
     #[ORM\Column(length: 255)]
     private ?string $zoneIntervention = null;
 
-    #[ORM\OneToOne(inversedBy: 'employe', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\Column(type: 'string', length: 20, nullable: true)]
+    #[Assert\NotBlank(message: 'Veuillez entrer un numéro de téléphone')]
+    #[Assert\Regex(
+        pattern: '/^(\+33|0)[1-9](\d{2}){4}$/',
+        message: 'Le format du numéro de téléphone n\'est pas valide. Utilisez le format 0XXXXXXXXX ou +33XXXXXXXXX'
+    )]
+    private ?string $telephone = null;
 
     #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Prestation::class)]
     private Collection $prestations;
@@ -72,14 +77,14 @@ class Client
         $this->zoneIntervention = $zoneIntervention;
     }
 
-    public function getUser(): ?User
+    public function getTelephone(): ?string
     {
-        return $this->user;
+        return $this->telephone;
     }
 
-    public function setUser(?User $user): void
+    public function setTelephone(?string $telephone): void
     {
-        $this->user = $user;
+        $this->telephone = $telephone;
     }
 
     public function getPrestations(): Collection
