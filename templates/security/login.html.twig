@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+    <div style="max-width: 400px; margin: 50px auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
+        <h1>Connexion</h1>
+
+        {% if error %}
+            <div style="color: red; margin-bottom: 15px;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div style="margin-bottom: 15px;">
+                <label for="inputEmail">Email:</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" required autofocus style="width: 100%; padding: 8px;">
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label for="inputPassword">Mot de passe:</label>
+                <input type="password" name="password" id="inputPassword" required style="width: 100%; padding: 8px;">
+            </div>
+
+            <button type="submit" style="background: #0275d8; color: white; padding: 10px 15px; border: none; border-radius: 3px; cursor: pointer;">
+                Connexion
+            </button>
+        </form>
+    </div>
+{% endblock %}
