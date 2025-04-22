@@ -6,7 +6,9 @@
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
+        "ext-http": "*",
         "ext-iconv": "*",
+        "egulias/email-validator": "^4.0",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
@@ -16,8 +18,7 @@
         "symfony/security-bundle": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*",
-      "ext-http": "*"
+        "symfony/yaml": "7.2.*"
     },
     "config": {
         "allow-plugins": {
