@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/prestation')]
+#[Route('/admin/prestation')]
 final class PrestationController extends AbstractController
 {
     #[Route(name: 'app_prestation_index', methods: ['GET'])]
@@ -30,6 +30,15 @@ final class PrestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $service = $prestation->getService();
+            $duree = $prestation->getDuree();
+
+            if ($service !== null && $duree !== null) {
+                $prixHoraire = $service->getPrixHoraire(); // Assure-toi que ce getter existe
+                $prixTotal = $prixHoraire * $duree;
+                $prestation->setPrixTotal($prixTotal);
+            }
+
             $entityManager->persist($prestation);
             $entityManager->flush();
 
@@ -57,6 +66,15 @@ final class PrestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $service = $prestation->getService();
+            $duree = $prestation->getDuree();
+        
+            if ($service !== null && $duree !== null) {
+                $prixHoraire = $service->getPrixHoraire();
+                $prixTotal = $prixHoraire * $duree;
+                $prestation->setPrixTotal($prixTotal);
+            }
+        
             $entityManager->flush();
 
             return $this->redirectToRoute('app_prestation_index', [], Response::HTTP_SEE_OTHER);
