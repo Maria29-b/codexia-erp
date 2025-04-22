@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de {{ client.prenom }} {{ client.nom }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="{{ path('app_client_index') }}" class="text-decoration-none">
+                    <i class="fas fa-users me-1"></i> Clients
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                <i class="fas fa-user me-1"></i> {{ client.prenom }} {{ client.nom }}
+            </li>
+        </ol>
+    </nav>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2 class="h5 mb-0">
+                    <i class="fas fa-user-circle me-2"></i>
+                    Fiche client : {{ client.prenom }} {{ client.nom }}
+                </h2>
+                <span class="badge bg-light text-dark">
+                    ID: {{ client.id }}
+                </span>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <th class="w-25">Prénom</th>
+                                    <td>{{ client.prenom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom</th>
+                                    <td>{{ client.nom }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email</th>
+                                    <td>
+                                        <a href="mailto:{{ client.email }}" class="text-decoration-none">
+                                            {{ client.email }}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Téléphone</th>
+                                    <td>
+                                        <a href="tel:{{ client.telephone }}" class="text-decoration-none">
+                                            {{ client.telephone}}
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Zone d'intervention</th>
+                                    <td>{{ client.zoneIntervention }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card border-0 h-100">
+                        <div class="card-header bg-light">
+                            <h3 class="h6 mb-0">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                Historique des prestations
+                            </h3>
+                        </div>
+                        <div class="card-body p-0">
+                            {% if client.prestations is not empty %}
+                                <div class="list-group list-group-flush">
+                                    {% for prestation in client.prestations %}
+                                    <div class="list-group-item">
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <strong>{{ prestation.date ? prestation.date|date('d/m/Y H:i') : '' }}</strong><br>
+                                                {{ prestation.service.nom }}
+                                            </div>
+                                            <div class="text-end">
+                                                <span class="badge bg-primary rounded-pill">
+                                                    {{ prestation.prixTotal }} €
+                                                </span><br>
+                                                <small class="text-muted">
+                                                    {{ prestation.employe.prenom }} {{ prestation.employe.nom }}
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="text-center py-4 text-muted">
+                                    <i class="fas fa-info-circle fa-2x mb-3"></i><br>
+                                    Aucune prestation enregistrée
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer bg-light">
+            <div class="d-flex justify-content-between">
+                <a href="{{ path('app_client_index') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i> Retour à la liste
+                </a>
+                <div class="btn-group">
+                    <a href="{{ path('app_client_edit', {'id': client.id}) }}" 
+                       class="btn btn-primary"
+                       title="Modifier">
+                        <i class="fas fa-edit me-2"></i> Modifier
+                    </a>
+                    {{ include('client/_delete_form.html.twig') }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
