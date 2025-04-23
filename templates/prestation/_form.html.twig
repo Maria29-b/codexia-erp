@@ -1,0 +1,58 @@
+{{ form_start(form) }}
+<div class="row">
+    {% for field in form %}
+        {% if field.vars.name != '_token' %}
+            <div class="mb-3 col-md-6">
+                {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(field, {'attr': {'class': 'form-control', 'id': field.vars.name }}) }}
+                {{ form_errors(field) }}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    {# ➕ Prix Total Display (disabled input, calculated from JS) #}
+    <div class="mb-3 col-md-6">
+        <label for="prixTotal" class="form-label">Prix total (€) (calculé automatiquement)</label>
+        <input type="text" id="prixTotal" class="form-control" value="" disabled>
+    </div>
+</div>
+
+<button class="btn btn-primary">
+    {{ button_label|default('Enregistrer') }}
+</button>
+{{ form_end(form) }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dureeInput = document.getElementById('prestation_duree');
+        const serviceSelect = document.getElementById('prestation_service');
+        const prixTotalInput = document.getElementById('prixTotal');
+
+        if (!dureeInput || !serviceSelect || !prixTotalInput) {
+            console.warn("One or more elements not found!");
+            return;
+        }
+
+        const prixHoraireMap = {
+            {% for service in services %}
+            '{{ service.id }}': {{ service.prixHoraire }},
+            {% endfor %}
+        };
+
+        function updateTotal() {
+            const duree = parseFloat(dureeInput.value);
+            const serviceId = serviceSelect.value;
+            const prixHoraire = prixHoraireMap[serviceId];
+
+            if (!isNaN(duree) && prixHoraire) {
+                const prixTotal = (duree / 60) * prixHoraire;
+                prixTotalInput.value = prixTotal.toFixed(2) + ' €';
+            } else {
+                prixTotalInput.value = '';
+            }
+        }
+
+        dureeInput.addEventListener('input', updateTotal);
+        serviceSelect.addEventListener('change', updateTotal);
+    });
+
+</script>

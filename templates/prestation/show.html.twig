@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Prestation
+{% endblock %}
+
+{% block body %}
+	<h1>Prestation</h1>
+
+	<table class="table">
+
+		
+
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ prestation.id }}</td>
+			</tr>
+      <tr>
+                <th>Client</th>
+                <td>{{ prestation.client.nom }} {{ prestation.client.prenom }}</td> {# Or .fullName if you have one #}
+            </tr>
+            <tr>
+                <th>Employé</th>
+                <td>{{ prestation.employee.nom }} {{ prestation.employee.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Service</th>
+                <td>{{ prestation.service.nom }}</td>
+            </tr>
+			<tr>
+				<th>Date</th>
+				<td>{{ prestation.date ? prestation.date|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>HeureDebut</th>
+				<td>{{ prestation.heureDebut ? prestation.heureDebut|date('H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Duree</th>
+				<td>{{ prestation.duree }}</td>
+			</tr>
+			<tr>
+				<th>Statut</th>
+				<td>{{ prestation.statut }}</td>
+			</tr>
+			<tr>
+				<th>PrixTotal</th>
+				<td>{{ prestation.prixTotal }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+    {# Bouton pour générer le PDF #}
+		<a href="{{ path('admin_prestation_pdf', {'id': prestation.id}) }}" class="btn btn-primary">
+			<i class="fas fa-print"></i>
+			Imprimer/PDF
+		</a>
+
+	<a href="{{ path('app_prestation_index') }}">back to list</a>
+
+	<a href="{{ path('app_prestation_edit', {'id': prestation.id}) }}">edit</a>
+
+	{{ include('prestation/_delete_form.html.twig') }}
+{% endblock %}

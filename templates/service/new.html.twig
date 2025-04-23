@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+{% block title %}Formulaire de Prestation{% endblock %}
+{% block body %}
+{{ form_start(form) }}
+
+<div class="row g-3">
+    <div class="col-md-6">
+        {{ form_label(form.nom, 'Nom du service') }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_label(form.prixHoraire, 'Prix Horaire (€)') }}
+        {{ form_widget(form.prixHoraire, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.prixHoraire) }}
+    </div>
+
+    <div class="col-12">
+        {{ form_label(form.description, 'Description') }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+</div>
+
+<div class="mt-4 d-flex justify-content-end">
+    <button class="btn btn-primary" type="submit">
+        {% if button_icon is defined %}
+            <i class="fas fa-{{ button_icon }} me-2"></i>
+        {% endif %}
+        {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
+{{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Employé{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1 class="mb-4">Bienvenue sur votre tableau de bord</h1>
+
+    <h2>Mes Prestations</h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for prestation in prestations %}
+                <tr>
+                    <td>{{ prestation.nom }}</td>
+                    <td>{{ prestation.date|date('d/m/Y') }}</td>
+                    <td>{{ prestation.description }}</td>
+                </tr>
+            {% else %}
+                <tr><td colspan="3">Aucune prestation trouvée.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

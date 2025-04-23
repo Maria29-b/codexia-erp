@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'employé{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_employe_index') }}">Employés</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ employe.prenom }} {{ employe.nom }}</li>
+        </ol>
+    </nav>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>{{ employe.prenom }} {{ employe.nom }}</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>ID</th>
+                                <td>{{ employe.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prénom</th>
+                                <td>{{ employe.prenom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ employe.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ employe.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Zone d'intervention</th>
+                                <td>{{ employe.zoneIntervention }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <h4>Prestations assignées</h4>
+                    {% if employe.prestations is not empty %}
+                        <ul class="list-group">
+                            {% for prestation in employe.prestations %}
+                                <li class="list-group-item">
+                                    {{ prestation.date ? prestation.date|date('d/m/Y H:i') : '' }} - 
+                                    {{ prestation.client.nom }} - 
+                                    {{ prestation.service.nom }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p>Aucune prestation assignée à cet employé.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group">
+                <a href="{{ path('app_employe_edit', {'id': employe.id}) }}" class="btn btn-primary">
+                    <i class="fas fa-edit"></i> Modifier
+                </a>
+                {{ include('employe/_delete_form.html.twig') }}
+                <a href="{{ path('app_employe_index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Retour à la liste
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
