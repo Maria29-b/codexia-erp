@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Calendrier des prestations{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css">
+    <style>
+        #calendar-container {
+            margin: 20px auto;
+            max-width: 1000px;
+        }
+        .filters {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .fc-event {
+            cursor: pointer;
+        }
+        #event-details {
+            display: none;
+            position: fixed;
+            top: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 500px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            padding: 20px;
+            z-index: 1000;
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            font-size: 1.5em;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Calendrier des prestations</h1>
+
+        <div id="calendar-container">
+            <div id="calendar"></div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/locales/fr.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser le calendrier
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                locale: 'fr',
+                timeZone: 'local',
+                editable: false,
+                selectable: false,
+                eventSources: [
+                    {
+                        url: '{{ path('calendar_events') }}',  // Use the 'calendar_events' route
+                        method: 'GET',
+                        failure: function() {
+                            alert('Erreur lors du chargement des prestations');
+                        }
+                    }
+                ],
+                eventClick: function(info) {
+                    // Afficher les détails de l'événement
+                    const event = info.event;
+                    const props = event.extendedProps;
+
+                    document.getElementById('detail-title').textContent = event.title;
+                    document.getElementById('detail-client').textContent = props.client;
+                    document.getElementById('detail-adresse').textContent = props.adresse;
+                    document.getElementById('detail-employe').textContent = props.employe;
+                    document.getElementById('detail-service').textContent = props.service;
+
+                    const startDate = new Date(event.start);
+                    document.getElementById('detail-date').textContent = startDate.toLocaleDateString('fr-FR');
+                    document.getElementById('detail-heure').textContent = startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+                    document.getElementById('detail-duree').textContent = props.duree;
+                    document.getElementById('detail-prix').textContent = props.prixTotal;
+                    document.getElementById('detail-statut').textContent = props.statut;
+
+                    // Mettre à jour le lien pour éditer
+                    document.getElementById('edit-link').href = '/admin/prestation/' + event.id + '/edit';
+
+                    // Afficher la modal
+                    document.getElementById('overlay').style.display = 'block';
+                    document.getElementById('event-details').style.display = 'block';
+                }
+            });
+
+            calendar.render();
+
+        });
+    </script>
+{% endblock %}
