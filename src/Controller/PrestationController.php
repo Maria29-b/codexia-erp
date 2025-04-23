@@ -14,13 +14,22 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/admin/prestation')]
 final class PrestationController extends AbstractController
 {
-    #[Route(name: 'app_prestation_index', methods: ['GET'])]
-    public function index(PrestationRepository $prestationRepository): Response
-    {
-        return $this->render('prestation/index.html.twig', [
-            'prestations' => $prestationRepository->findAll(),
-        ]);
-    }
+    #[Route('/', name: 'app_prestation_index')]
+public function index(Request $request, PrestationRepository $prestationRepository, ClientRepository $clientRepo, EmployeRepository $employeRepo, ServiceRepository $serviceRepo): Response
+{
+    $filters = $request->query->all();
+
+    $prestations = $prestationRepository->findByFilters($filters);
+
+    return $this->render('prestation/index.html.twig', [
+        'prestations' => $prestations,
+        'clients' => $clientRepo->findAll(),
+        'employes' => $employeRepo->findAll(),
+        'services' => $serviceRepo->findAll(),
+        'selectedFilters' => $filters,
+    ]);
+}
+
 
     #[Route('/new', name: 'app_prestation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

@@ -6,6 +6,67 @@
     <div class="container">
         <h1 class="mt-5 mb-3">Prestation index</h1>
 
+    <div class="d-flex justify-content-between">
+        <div> <a href="{{ path('app_prestation_new') }}">Create new</a></div>
+        
+        <form method="get" class="row g-3 mb-4">
+            <div class="col-md-2">
+                <select name="client" class="form-select">
+                    <option value="">Client</option>
+                    {% for client in clients %}
+                        <option value="{{ client.id }}" {{ selectedFilters.client == client.id ? 'selected' : '' }}>
+                            {{ client.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="employe" class="form-select">
+                    <option value="">Employé</option>
+                    {% for employe in employes %}
+                        <option value="{{ employe.id }}" {{ selectedFilters.employe == employe.id ? 'selected' : '' }}>
+                            {{ employe.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="service" class="form-select">
+                    <option value="">Service</option>
+                    {% for service in services %}
+                        <option value="{{ service.id }}" {{ selectedFilters.service == service.id ? 'selected' : '' }}>
+                            {{ service.nom }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="statut" class="form-select">
+                    <option value="">Statut</option>
+                    {% for status in ['planifié', 'annulé', 'terminé'] %}
+                        <option value="{{ status }}" {{ selectedFilters.statut == status ? 'selected' : '' }}>
+                            {{ status|capitalize }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <select name="mois" class="form-select">
+                    <option value="">Mois</option>
+                    {% for i in 1..12 %}
+                        <option value="{{ i }}" {{ selectedFilters.mois == i ? 'selected' : '' }}>
+                            {{ i|date('F', '1970-' ~ i|str_pad(2, '0', 'left') ~ '-01') }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Filtrer</button>
+                <a href="{{ path('app_prestation_index') }}" class="btn btn-secondary">Réinitialiser</a>
+            </div>
+        </form>
+
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -40,6 +101,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_prestation_new') }}">Create new</a>
     </div>
 {% endblock %}
