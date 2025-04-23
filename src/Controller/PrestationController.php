@@ -175,7 +175,7 @@ final class PrestationController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_prestation_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Prestation $prestation, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Prestation $prestation, EntityManagerInterface $entityManager, ServiceRepository $serviceRepo): Response
     {
         $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
@@ -189,6 +189,7 @@ final class PrestationController extends AbstractController
         return $this->render('prestation/edit.html.twig', [
             'prestation' => $prestation,
             'form' => $form,
+            'services' => $serviceRepo->findAll(),
         ]);
     }
 
@@ -223,4 +224,23 @@ final class PrestationController extends AbstractController
 
         return $this->redirectToRoute('employee_calendar');
     }
+
+    #[Route('/my-prestations', name: 'employee_my_prestations')]
+    #[IsGranted('ROLE_EMPLOYEE')]
+    public function myPrestations(
+        PrestationRepository $prestationRepository
+    ): Response {
+        $currentEmployee = $this->getUser()->getEmployee();
+
+        if (!$currentEmployee) {
+            throw $this->createNotFoundException('Aucun employé associé à cet utilisateur.');
+        }
+
+        $prestations = $prestationRepository->findByEmployee($currentEmployee);
+
+        return $this->render('prestation/my_prestations.html.twig', [
+            'prestations' => $prestations,
+        ]);
+    }
+
 }
