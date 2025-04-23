@@ -26,54 +26,36 @@ class PrestationRepository extends ServiceEntityRepository
 
         if (!empty($filters['client'])) {
             $qb->andWhere('c.id = :client')
-            ->setParameter('client', $filters['client']);
+               ->setParameter('client', $filters['client']);
         }
 
         if (!empty($filters['employee'])) {
             $qb->andWhere('e.id = :employee')
-            ->setParameter('employee', $filters['employee']);
+               ->setParameter('employee', $filters['employee']);
         }
 
         if (!empty($filters['service'])) {
             $qb->andWhere('s.id = :service')
-            ->setParameter('service', $filters['service']);
+               ->setParameter('service', $filters['service']);
         }
 
         if (!empty($filters['statut'])) {
             $qb->andWhere('p.statut = :statut')
-            ->setParameter('statut', $filters['statut']);
+               ->setParameter('statut', $filters['statut']);
         }
 
         if (!empty($filters['mois'])) {
-            $qb->andWhere('MONTH(p.date) = :mois')
-            ->setParameter('mois', $filters['mois']);
+            $annee = (new \DateTime())->format('Y'); // année actuelle
+            $mois = str_pad($filters['mois'], 2, '0', STR_PAD_LEFT);
+            $startDate = new \DateTime("$annee-$mois-01");
+            $endDate = (clone $startDate)->modify('first day of next month');
+
+            $qb->andWhere('p.date >= :start')
+               ->andWhere('p.date < :end')
+               ->setParameter('start', $startDate)
+               ->setParameter('end', $endDate);
         }
 
         return $qb->getQuery()->getResult();
     }
-
-    //    /**
-    //     * @return Prestation[] Returns an array of Prestation objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?Prestation
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }
