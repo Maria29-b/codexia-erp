@@ -1,4 +1,17 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="row">
+        {% for field in form %}
+            {% if field.vars.name != '_token' %}
+                <div class="mb-3 col-md-6">
+                    {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_errors(field) }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <button class="btn btn-primary">
+        {{ button_label|default('Enregistrer') }}
+    </button>
 {{ form_end(form) }}
