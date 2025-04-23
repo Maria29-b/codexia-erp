@@ -1,3 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un client{% endblock %}
+
+{% block body %}
 {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
     <div class="row">
         <div class="col-md-6">
@@ -32,3 +37,4 @@
 
     <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
 {{ form_end(form) }}
+{% endblock %}

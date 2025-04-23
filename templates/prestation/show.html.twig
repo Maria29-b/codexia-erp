@@ -15,6 +15,18 @@
 				<th>Id</th>
 				<td>{{ prestation.id }}</td>
 			</tr>
+      <tr>
+                <th>Client</th>
+                <td>{{ prestation.client.nom }} {{ prestation.client.prenom }}</td> {# Or .fullName if you have one #}
+            </tr>
+            <tr>
+                <th>Employé</th>
+                <td>{{ prestation.employee.nom }} {{ prestation.employee.prenom }}</td>
+            </tr>
+            <tr>
+                <th>Service</th>
+                <td>{{ prestation.service.nom }}</td>
+            </tr>
 			<tr>
 				<th>Date</th>
 				<td>{{ prestation.date ? prestation.date|date('Y-m-d') : '' }}</td>

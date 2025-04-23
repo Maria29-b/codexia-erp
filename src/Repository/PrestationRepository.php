@@ -16,13 +16,13 @@ class PrestationRepository extends ServiceEntityRepository
         parent::__construct($registry, Prestation::class);
     }
 
-    public function findByFilters(array $filters): array
+    public function getFilteredQueryBuilder(array $filters): array
     {
         $qb = $this->createQueryBuilder('p')
-            ->leftJoin('p.client', 'c')
-            ->leftJoin('p.employee', 'e')
-            ->leftJoin('p.service', 's')
-            ->addSelect('c', 'e', 's');
+            ->leftJoin('p.client', 'c')->addSelect('c')
+            ->leftJoin('p.employee', 'e')->addSelect('e')
+            ->leftJoin('p.service', 's')->addSelect('s')
+            ->orderBy('p.id','DESC');
 
         if (!empty($filters['client'])) {
             $qb->andWhere('c.id = :client')
