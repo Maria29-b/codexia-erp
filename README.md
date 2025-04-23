@@ -1,3 +1,14 @@
+### Initialisation de l’environnement de développement
+
+Nous avons mis en place un environnement de développement standardisé à l’aide de **Docker** afin de garantir une configuration cohérente pour tous les membres de l’équipe.
+
+L’environnement comprend :
+
+- Symfony (PHP)
+- PostgreSQL comme base de données
+- Serveur web (Nginx)
+- Composer pour la gestion des dépendances
+
 **Initialisation de l’Environnement de Développement**
 Un environnement de développement standardisé a été mis en place à l’aide de Docker, garantissant une configuration homogène pour l’ensemble de l’équipe.
 
@@ -31,4 +42,3 @@ Doctrine ORM
 Twig (moteur de templates) et Bootstrap
 
 Git / GitHub (gestion de version et collaboration)
-

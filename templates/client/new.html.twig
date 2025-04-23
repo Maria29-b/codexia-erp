@@ -1,44 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau client{% endblock %}
+{% block title %}Créer un client{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="{{ path('app_client_index') }}" class="text-decoration-none">
-                    <i class="fas fa-users me-1"></i> Liste des clients
-                </a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">
-                <i class="fas fa-user-plus me-1"></i> Nouveau client
-            </li>
-        </ol>
-    </nav>
+{{ form_start(form, {'attr': {'id': 'client_form'}}) }}
 
-    <div class="card shadow-sm">
-        <div class="card-header bg-primary text-white">
-            <div class="d-flex justify-content-between align-items-center">
-                <h2 class="h5 mb-0">
-                    <i class="fas fa-user-plus me-2"></i>
-                    Création d'un nouveau client
-                </h2>
-            </div>
-        </div>
+<div class="row g-3">
+    <div class="col-md-6">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
 
-        <div class="card-body">
-            {{ include('client/_form.html.twig', {
-                'button_label': 'Enregistrer le client',
-                'button_icon': 'save'
-            }) }}
-        </div>
+    <div class="col-md-6">
+        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.prenom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.prenom) }}
+    </div>
 
-        <div class="card-footer bg-light">
-            <a href="{{ path('app_client_index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i> Retour à la liste
-            </a>
-        </div>
+    <div class="col-md-6">
+        {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.telephone) }}
+    </div>
+
+    <div class="col-md-6">
+        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.email) }}
     </div>
 </div>
+
+<div class="mt-4">
+    <button type="submit" class="btn btn-primary">
+        <i class="fas fa-{{ button_icon|default('save') }} me-2"></i> {{ button_label|default('Enregistrer') }}
+    </button>
+</div>
+
+{{ form_end(form) }}
 {% endblock %}
