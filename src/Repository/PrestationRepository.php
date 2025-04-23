@@ -58,4 +58,13 @@ class PrestationRepository extends ServiceEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+    public function findByEmployee($employee)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.employee = :employee')
+            ->setParameter('employee', $employee)
+            ->getQuery()
+            ->getResult();
+    }
+
 }

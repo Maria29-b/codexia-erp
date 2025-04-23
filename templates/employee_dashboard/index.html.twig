@@ -5,28 +5,34 @@
 {% block body %}
 <div class="container mt-4">
     <h1 class="mb-4">Bienvenue sur votre tableau de bord</h1>
-
-    <h2>Mes Prestations</h2>
-
-    <table class="table table-striped">
-        <thead>
+        <h1>My Prestations</h1>
+        <table>
+            <thead>
             <tr>
-                <th>Nom</th>
+                <th>Service</th>
                 <th>Date</th>
-                <th>Description</th>
+                <th>Duration</th>
+                <th>Status</th>
             </tr>
-        </thead>
-        <tbody>
-            {% for prestation in prestations %}
+            </thead>
+            <tbody>
+            {% if prestations is empty %}
                 <tr>
-                    <td>{{ prestation.nom }}</td>
-                    <td>{{ prestation.date|date('d/m/Y') }}</td>
-                    <td>{{ prestation.description }}</td>
+                    <td colspan="4">Aucune prestation trouvée pour vous.</td>
                 </tr>
             {% else %}
-                <tr><td colspan="3">Aucune prestation trouvée.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-{% endblock %}
+                {% for prestation in prestations %}
+                    <tr>
+                        <td>{{ prestation.service.nom }}</td>
+                        <td>{{ prestation.date|date('Y-m-d H:i') }}</td>
+                        <td>{{ prestation.duree }} minutes</td>
+                        <td>{{ prestation.statut }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
+            </tbody>
+
+        </table>
+    </div>
+    {% endblock %}
+
