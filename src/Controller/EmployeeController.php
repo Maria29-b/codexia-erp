@@ -93,3 +93,25 @@ class EmployeeController extends AbstractController
         return $this->redirectToRoute('app_employee_index', [], Response::HTTP_SEE_OTHER);
     }
 }
+
+// src/Controller/EmployeController.php
+use App\Repository\PrestationRepository;
+// ...
+
+class EmployeController extends AbstractController
+{
+    #[Route('/mes-prestations', name: 'app_employe_prestations')]
+    public function mesPrestations(PrestationRepository $prestationRepo): Response
+    {
+        $user = $this->getUser(); // Récupère l'employé connecté
+        
+        // Récupère les prestations à venir et terminées
+        $upcoming = $prestationRepo->findUpcomingForUser($user);
+        $completed = $prestationRepo->findCompletedForUser($user);
+
+        return $this->render('employe/prestations.html.twig', [
+            'upcoming_prestations' => $upcoming,
+            'completed_prestations' => $completed,
+        ]);
+    }
+}

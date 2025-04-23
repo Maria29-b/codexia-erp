@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
 use App\Entity\Prestation;
 use App\Form\PrestationType;
 use App\Repository\PrestationRepository;
@@ -65,6 +66,99 @@ final class PrestationController extends AbstractController
         return $this->render('prestation/show.html.twig', [
             'prestation' => $prestation,
         ]);
+    }
+
+    #[Route('/{id}/pdf', name: 'admin_prestation_pdf', methods: ['GET'])]
+    public function generatePdf(Prestation $prestation): Response
+    {
+        // 1. Générer le HTML
+        $html = '
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Facture Prestation</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    max-width: 800px;
+                    margin: 0 auto;
+                    padding: 30px;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                }
+                .header {
+                    text-align: center;
+                    margin-bottom: 40px;
+                }
+                .header h1 {
+                    margin-bottom: 5px;
+                }
+                .contact-info {
+                    font-size: 0.9em;
+                    color: #666;
+                }
+                .details {
+                    margin-bottom: 20px;
+                }
+                .details h2 {
+                    font-size: 1.2em;
+                    margin-bottom: 10px;
+                }
+                .total {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    margin-top: 30px;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>Votre Entreprise</h1>
+                    <p class="contact-info">123 Rue de Paris<br>contact@entreprise.com</p>
+                </div>
+
+                <div class="details">
+                    <h2>Facture Prestation #' . $prestation->getId() . '</h2>
+                    <p><strong>Client :</strong> ' . $prestation->getClient()->getPrenom() . ' ' . $prestation->getClient()->getNom() . '</p>
+                    <p><strong>Date :</strong> ' . $prestation->getDate()->format('d/m/Y') . '</p>
+                </div>
+
+                <div class="total">
+                    Total à payer : ' . number_format($prestation->getPrixTotal(), 2, ',', ' ') . ' €
+                </div>
+            </div>
+        </body>
+        </html>';
+
+        // 2. Initialiser Dompdf
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($html);
+        $dompdf->setPaper('A4', 'portrait');
+        
+        // 3. Rendre le PDF
+        $dompdf->render();
+    
+        // 4. Ajouter le footer (APRÈS le render())
+        $canvas = $dompdf->getCanvas();
+        $footer = "Page {PAGE_NUM} sur {PAGE_COUNT} | Généré le " . date('d/m/Y');
+        $canvas->page_text(270, 820, $footer, null, 10, [0, 0, 0]);
+    
+        // 5. Générer le nom du fichier
+        $filename = sprintf('prestation-%d-%s.pdf', $prestation->getId(), date('Ymd-His'));
+    
+        // 6. Retourner la réponse
+        return new Response(
+            $dompdf->output(),
+            Response::HTTP_OK,
+            [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'inline; filename="'.$filename.'"'
+            ]
+        );
     }
 
     #[Route('/{id}/edit', name: 'app_prestation_edit', methods: ['GET', 'POST'])]
