@@ -8,6 +8,7 @@ use App\Entity\Prestation;
 use App\Entity\Service;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -48,25 +49,14 @@ class PrestationType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('statut', TextType::class, [
+            ->add('statut', ChoiceType::class, [
                 'label' => 'Statut',
-                'constraints' => [
-                    new NotBlank(['message' => 'Veuillez indiquer un statut']),
-                    new Length([
-                        'max' => 50,
-                        'maxMessage' => 'Le statut ne peut pas dépasser {{ limit }} caractères',
-                    ]),
+                'choices' => [
+                    'À planifier' => 'a_planifier',
+                    'Confirmé' => 'confirme',
+                    'Réalisé' => 'realise',
                 ],
-            ])
-            ->add('prixTotal', NumberType::class, [
-                'label' => 'Prix total (€)',
-                'constraints' => [
-                    new NotBlank(['message' => 'Veuillez entrer le prix total']),
-                    new GreaterThanOrEqual([
-                        'value' => 0,
-                        'message' => 'Le prix ne peut pas être négatif',
-                    ]),
-                ],
+                'placeholder' => 'Sélectionnez un statut',
             ])
             ->add('client', EntityType::class, [
                 'class' => Client::class,

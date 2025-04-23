@@ -9,6 +9,7 @@ use App\Repository\ClientRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,11 +25,18 @@ final class PrestationController extends AbstractController
         PrestationRepository $prestationRepository,
         ClientRepository $clientRepo,
         EmployeeRepository $employeeRepo,
-        ServiceRepository $serviceRepo
+        ServiceRepository $serviceRepo,
+        PaginatorInterface $paginator
     ): Response {
         $filters = $request->query->all();
 
-        $prestations = $prestationRepository->findByFilters($filters);
+        $queryBuilder = $prestationRepository->getFilteredQueryBuilder($filters);
+
+        $prestations = $paginator->paginate(
+            $queryBuilder,
+            $request->query->getInt('page', 1),
+            10
+        );
 
         return $this->render('prestation/index.html.twig', [
             'prestations' => $prestations,
@@ -40,13 +48,17 @@ final class PrestationController extends AbstractController
     }
 
     #[Route('/new', name: 'app_prestation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, ServiceRepository $serviceRepo): Response
     {
         $prestation = new Prestation();
         $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $duree = $prestation->getDuree(); // in minutes
+            $prixHoraire = $prestation->getService()->getPrixHoraire(); // per hour
+            $prixTotal = ($duree / 60) * $prixHoraire;
+            $prestation->setPrixTotal($prixTotal);
             $entityManager->persist($prestation);
             $entityManager->flush();
 
@@ -56,6 +68,7 @@ final class PrestationController extends AbstractController
         return $this->render('prestation/new.html.twig', [
             'prestation' => $prestation,
             'form' => $form,
+            'services' => $serviceRepo->findAll(),
         ]);
     }
 

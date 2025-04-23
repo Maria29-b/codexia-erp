@@ -5,7 +5,7 @@
 {% block body %}
     <div class="container">
     <h1 class="mt-5 mb-3">Service index</h1>
-
+        <a href="{{ path('app_service_new') }}">Create new</a>
     <table class="table">
         <thead>
             <tr>
@@ -35,6 +35,5 @@
         {% endfor %}
         </tbody>
     </table>
-
-    <a href="{{ path('app_service_new') }}">Create new</a></div>
+    </div>
 {% endblock %}

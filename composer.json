@@ -9,6 +9,7 @@
         "ext-http": "*",
         "ext-iconv": "*",
         "egulias/email-validator": "^4.0",
+        "knplabs/knp-paginator-bundle": "^6.8",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
