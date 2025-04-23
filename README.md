@@ -24,7 +24,7 @@ Affichage dynamique des interfaces selon le rôle utilisateur
 Collaboration efficace via Git / GitHub (branches, pull requests, merge)
 
 -** Technologies Utilisées**
-Symfony 7
+Symfony 7.2.5
 
 Doctrine ORM
 
