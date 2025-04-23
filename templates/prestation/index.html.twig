@@ -3,7 +3,8 @@
 {% block title %}Prestation index{% endblock %}
 
 {% block body %}
-    <h1>Prestation index</h1>
+    <div class="container">
+        <h1 class="mt-5 mb-3">Prestation index</h1>
 
     <table class="table">
         <thead>
@@ -40,4 +41,5 @@
     </table>
 
     <a href="{{ path('app_prestation_new') }}">Create new</a>
+    </div>
 {% endblock %}

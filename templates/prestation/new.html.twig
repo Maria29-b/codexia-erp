@@ -1,11 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Prestation{% endblock %}
+{% block title %}Nouvelle prestation{% endblock %}
 
 {% block body %}
-    <h1>Create new Prestation</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Créer une nouvelle prestation</h1>
 
-    {{ include('prestation/_form.html.twig') }}
+        <div class="card shadow-sm p-4">
+            {{ include('prestation/_form.html.twig') }}
+        </div>
 
-    <a href="{{ path('app_prestation_index') }}">back to list</a>
+        <a href="{{ path('app_prestation_index') }}" class="btn btn-secondary mt-3">
+            ← Retour à la liste
+        </a>
+    </div>
 {% endblock %}

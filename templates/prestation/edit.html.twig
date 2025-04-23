@@ -1,13 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Prestation{% endblock %}
+{% block title %}Modifier la prestation{% endblock %}
 
 {% block body %}
-    <h1>Edit Prestation</h1>
+    <div class="container mt-5">
+        <h1 class="mb-4">Modifier la prestation</h1>
 
-    {{ include('prestation/_form.html.twig', {'button_label': 'Update'}) }}
+        <div class="card shadow-sm p-4">
+            {{ include('prestation/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+        </div>
 
-    <a href="{{ path('app_prestation_index') }}">back to list</a>
+        <div class="d-flex justify-content-between mt-3">
+            <a href="{{ path('app_prestation_index') }}" class="btn btn-secondary">
+                ← Retour à la liste
+            </a>
 
-    {{ include('prestation/_delete_form.html.twig') }}
+            {{ include('prestation/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}
