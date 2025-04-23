@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/employee')]
+#[Route('/admin/employee')]
 #[IsGranted('ROLE_ADMIN')]
 class EmployeeController extends AbstractController
 {

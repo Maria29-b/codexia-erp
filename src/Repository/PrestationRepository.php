@@ -20,7 +20,7 @@ class PrestationRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->leftJoin('p.client', 'c')
-            ->leftJoin('p.employe', 'e')
+            ->leftJoin('p.employee', 'e')
             ->leftJoin('p.service', 's')
             ->addSelect('c', 'e', 's');
 
@@ -29,9 +29,9 @@ class PrestationRepository extends ServiceEntityRepository
             ->setParameter('client', $filters['client']);
         }
 
-        if (!empty($filters['employe'])) {
-            $qb->andWhere('e.id = :employe')
-            ->setParameter('employe', $filters['employe']);
+        if (!empty($filters['employee'])) {
+            $qb->andWhere('e.id = :employee')
+            ->setParameter('employee', $filters['employee']);
         }
 
         if (!empty($filters['service'])) {

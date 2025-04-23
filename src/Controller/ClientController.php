@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/client')]
+#[Route('admin/client')]
 #[IsGranted('ROLE_ADMIN')]
 final class ClientController extends AbstractController
 {

@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Prestation;
 use App\Form\PrestationType;
 use App\Repository\PrestationRepository;
+use App\Repository\ClientRepository;
+use App\Repository\EmployeeRepository;
+use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,21 +18,25 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PrestationController extends AbstractController
 {
     #[Route('/', name: 'app_prestation_index')]
-public function index(Request $request, PrestationRepository $prestationRepository, ClientRepository $clientRepo, EmployeRepository $employeRepo, ServiceRepository $serviceRepo): Response
-{
-    $filters = $request->query->all();
+    public function index(
+        Request $request,
+        PrestationRepository $prestationRepository,
+        ClientRepository $clientRepo,
+        EmployeeRepository $employeeRepo,
+        ServiceRepository $serviceRepo
+    ): Response {
+        $filters = $request->query->all();
 
-    $prestations = $prestationRepository->findByFilters($filters);
+        $prestations = $prestationRepository->findByFilters($filters);
 
-    return $this->render('prestation/index.html.twig', [
-        'prestations' => $prestations,
-        'clients' => $clientRepo->findAll(),
-        'employes' => $employeRepo->findAll(),
-        'services' => $serviceRepo->findAll(),
-        'selectedFilters' => $filters,
-    ]);
-}
-
+        return $this->render('prestation/index.html.twig', [
+            'prestations' => $prestations,
+            'clients' => $clientRepo->findAll(),
+            'employees' => $employeeRepo->findAll(),
+            'services' => $serviceRepo->findAll(),
+            'selectedFilters' => $filters,
+        ]);
+    }
 
     #[Route('/new', name: 'app_prestation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -39,15 +46,6 @@ public function index(Request $request, PrestationRepository $prestationReposito
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $service = $prestation->getService();
-            $duree = $prestation->getDuree();
-
-            if ($service !== null && $duree !== null) {
-                $prixHoraire = $service->getPrixHoraire(); // Assure-toi que ce getter existe
-                $prixTotal = $prixHoraire * $duree;
-                $prestation->setPrixTotal($prixTotal);
-            }
-
             $entityManager->persist($prestation);
             $entityManager->flush();
 
@@ -75,15 +73,6 @@ public function index(Request $request, PrestationRepository $prestationReposito
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $service = $prestation->getService();
-            $duree = $prestation->getDuree();
-        
-            if ($service !== null && $duree !== null) {
-                $prixHoraire = $service->getPrixHoraire();
-                $prixTotal = $prixHoraire * $duree;
-                $prestation->setPrixTotal($prixTotal);
-            }
-        
             $entityManager->flush();
 
             return $this->redirectToRoute('app_prestation_index', [], Response::HTTP_SEE_OTHER);
@@ -98,7 +87,7 @@ public function index(Request $request, PrestationRepository $prestationReposito
     #[Route('/{id}', name: 'app_prestation_delete', methods: ['POST'])]
     public function delete(Request $request, Prestation $prestation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$prestation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $prestation->getId(), $request->request->get('_token'))) {
             $entityManager->remove($prestation);
             $entityManager->flush();
         }
