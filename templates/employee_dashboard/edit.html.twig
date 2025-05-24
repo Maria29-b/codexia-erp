@@ -1,0 +1,208 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier la prestation{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('employee_dashboard') }}">
+                            <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
+                            <span>Modifier la prestation</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            {% for message in app.flashes('success') %}
+                <div class="notification is-success is-light">
+                    <button class="delete"></button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <div class="box">
+                <div class="level mb-5">
+                    <div class="level-left">
+                        <h1 class="title is-3 mb-0">
+                            <span class="icon-text">
+                                <span class="icon has-text-info"><i class="fas fa-edit"></i></span>
+                                <span>Modifier la prestation</span>
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="level-right">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">ID</span>
+                            <span class="tag is-info">{{ prestation.id }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="columns is-multiline">
+                    <div class="column is-6">
+                        <div class="box has-background-light">
+                            <h3 class="title is-4 mb-4">
+                                <span class="icon-text">
+                                    <span class="icon has-text-info"><i class="fas fa-info-circle"></i></span>
+                                    <span>Détails de la prestation</span>
+                                </span>
+                            </h3>
+                            
+                            <div class="field mb-5">
+                                <label class="label">Service</label>
+                                <div class="control">
+                                    <div class="tags has-addons">
+                                        <span class="tag is-medium is-info">
+                                            <span class="icon">
+                                                <i class="fas fa-concierge-bell"></i>
+                                            </span>
+                                        </span>
+                                        <span class="tag is-medium is-info is-light">
+                                            {{ prestation.service.nom }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field mb-5">
+                                <label class="label">Client</label>
+                                <div class="control">
+                                    <div class="tags has-addons">
+                                        <span class="tag is-medium is-primary">
+                                            <span class="icon">
+                                                <i class="fas fa-user"></i>
+                                            </span>
+                                        </span>
+                                        <span class="tag is-medium is-primary is-light">
+                                            {{ prestation.client.nom }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="columns">
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">Date et heure</label>
+                                        <div class="control">
+                                            <div class="tags has-addons">
+                                                <span class="tag is-medium is-warning">
+                                                    <span class="icon">
+                                                        <i class="fas fa-calendar"></i>
+                                                    </span>
+                                                    <span>{{ prestation.date|date('d/m/Y') }}</span>
+                                                </span>
+                                                <span class="tag is-medium is-warning is-light">
+                                                    <span class="icon">
+                                                        <i class="fas fa-clock"></i>
+                                                    </span>
+                                                    <span>{{ prestation.date|date('H:i') }}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column">
+                                    <div class="field">
+                                        <label class="label">Durée</label>
+                                        <div class="control">
+                                            <div class="tags has-addons">
+                                                <span class="tag is-medium is-success">
+                                                    <span class="icon">
+                                                        <i class="fas fa-hourglass"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="tag is-medium is-success is-light">
+                                                    {{ prestation.duree }} minutes
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column is-6">
+                        <form method="post" class="box">
+                            <h3 class="title is-4 mb-5">
+                                <span class="icon-text">
+                                    <span class="icon has-text-warning"><i class="fas fa-tasks"></i></span>
+                                    <span>Mettre à jour le statut</span>
+                                </span>
+                            </h3>
+
+                            <div class="field mb-5">
+                                <label class="label">Statut actuel</label>
+                                <div class="control">
+                                    <div class="tags">                                        <span class="tag is-medium {% if prestation.statut == 'à planifier' %}is-warning
+                                            {% elseif prestation.statut == 'confirmé' %}is-info
+                                            {% elseif prestation.statut == 'réalisé' %}is-success
+                                            {% endif %}">
+                                            <span class="icon">
+                                                <i class="fas {% if prestation.statut == 'à planifier' %}fa-calendar-alt
+                                                    {% elseif prestation.statut == 'confirmé' %}fa-calendar-check
+                                                    {% elseif prestation.statut == 'réalisé' %}fa-check-circle
+                                                    {% endif %}"></i>
+                                            </span>
+                                            <span>{{ prestation.statut|capitalize }}</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="field mb-5">
+                                <label for="statut" class="label">Nouveau statut</label>
+                                <div class="control has-icons-left">
+                                    <div class="select is-fullwidth">
+                                        <select name="statut" id="statut" class="input">                                            <option value="à planifier" {% if prestation.statut == 'à planifier' %}selected{% endif %}>
+                                                À planifier
+                                            </option>
+                                            <option value="confirmé" {% if prestation.statut == 'confirmé' %}selected{% endif %}>
+                                                Confirmé
+                                            </option>
+                                            <option value="réalisé" {% if prestation.statut == 'réalisé' %}selected{% endif %}>
+                                                Réalisé
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <span class="icon is-left">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="field is-grouped">
+                                <div class="control">
+                                    <button type="submit" class="button is-primary is-medium">
+                                        <span class="icon">
+                                            <i class="fas fa-save"></i>
+                                        </span>
+                                        <span>Mettre à jour</span>
+                                    </button>
+                                </div>
+                                <div class="control">
+                                    <a href="{{ path('employee_dashboard') }}" class="button is-light is-medium">
+                                        <span class="icon">
+                                            <i class="fas fa-arrow-left"></i>
+                                        </span>
+                                        <span>Retour</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,36 +1,55 @@
 {% extends 'base.html.twig' %}
 {% block title %}Formulaire de Prestation{% endblock %}
 {% block body %}
-{{ form_start(form) }}
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_service_index') }}">
+                            <span class="icon"><i class="fas fa-concierge-bell"></i></span>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-plus"></i></span>
+                            <span>Nouveau service</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-<div class="row g-3">
-    <div class="col-md-6">
-        {{ form_label(form.nom, 'Nom du service') }}
-        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.nom) }}
-    </div>
+            <div class="box">
+                <div class="level mb-4">
+                    <div class="level-left">
+                        <h2 class="title is-4">
+                            <span class="icon-text">
+                                <span class="icon"><i class="fas fa-plus"></i></span>
+                                <span>Nouveau service</span>
+                            </span>
+                        </h2>
+                    </div>
+                </div>
 
-    <div class="col-md-6">
-        {{ form_label(form.prixHoraire, 'Prix Horaire (€)') }}
-        {{ form_widget(form.prixHoraire, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(form.prixHoraire) }}
-    </div>
+                <div class="content">
+                    {{ include('service/_form.html.twig', {
+                        'button_label': 'Créer',
+                        'button_icon': 'plus'
+                    }) }}
+                </div>
 
-    <div class="col-12">
-        {{ form_label(form.description, 'Description') }}
-        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4}}) }}
-        {{ form_errors(form.description) }}
-    </div>
-</div>
-
-<div class="mt-4 d-flex justify-content-end">
-    <button class="btn btn-primary" type="submit">
-        {% if button_icon is defined %}
-            <i class="fas fa-{{ button_icon }} me-2"></i>
-        {% endif %}
-        {{ button_label|default('Enregistrer') }}
-    </button>
-</div>
-
-{{ form_end(form) }}
+                <div class="level mt-5">
+                    <div class="level-left">
+                        <a href="{{ path('app_service_index') }}" class="button is-light">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span>Retour à la liste</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

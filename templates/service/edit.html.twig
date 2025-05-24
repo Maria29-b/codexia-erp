@@ -3,19 +3,69 @@
 {% block title %}Modifier le service{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="mb-4">Modifier le service</h1>
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_service_index') }}">
+                            <span class="icon"><i class="fas fa-concierge-bell"></i></span>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ path('app_service_show', {'id': service.id}) }}">
+                            <span class="icon"><i class="fas fa-cog"></i></span>
+                            <span>{{ service.nom }}</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
+                            <span>Modification</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-        <div class="card shadow-sm p-4">
-            {{ include('service/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            <div class="box">
+                <div class="level mb-4">
+                    <div class="level-left">
+                        <h2 class="title is-4">
+                            <span class="icon-text">
+                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                <span>Modifier {{ service.nom }}</span>
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="level-right">
+                        <span class="tag is-medium">ID: {{ service.id }}</span>
+                    </div>
+                </div>
+
+                <div class="content">
+                    {{ include('service/_form.html.twig', {
+                        'button_label': 'Mettre à jour',
+                        'button_icon': 'save'
+                    }) }}
+                </div>
+
+                <div class="level mt-5">
+                    <div class="level-left">
+                        <a href="{{ path('app_service_index') }}" class="button is-light">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span>Retour à la liste</span>
+                        </a>
+                    </div>
+                    <div class="level-right">
+                        <div class="buttons">
+                            {{ include('service/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="d-flex justify-content-between mt-3">
-            <a href="{{ path('app_service_index') }}" class="btn btn-secondary">
-                ← Retour à la liste
-            </a>
-
-            {{ include('service/_delete_form.html.twig') }}
-        </div>
-    </div>
+    </section>
 {% endblock %}

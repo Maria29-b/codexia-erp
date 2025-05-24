@@ -2,19 +2,25 @@
 
 {% block title %}Liste des clients{% endblock %}
 
-{% block body %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Liste des clients</h1>
-        <a href="{{ path('app_client_new') }}" class="btn btn-success">
-            <i class="fas fa-plus"></i> Ajouter un client
-        </a>
-    </div>
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="is-flex is-justify-content-space-between is-align-items-center mb-4">
+                <h1 class="title is-4">Liste des clients</h1>
+                <a href="{{ path('app_client_new') }}" class="button is-success">
+                    <span class="icon"><i class="fas fa-plus"></i></span>
+                    <span>Ajouter un client</span>
+                </a>
+            </div>
+
+            <div class="box">
+                <table class="table is-striped is-fullwidth">
+                    <thead>
                     <tr>
                         <th>ID</th>
                         <th>Nom complet</th>
@@ -23,34 +29,36 @@
                         <th>Zone</th>
                         <th>Actions</th>
                     </tr>
-                </thead>
-                <tbody>
-                {% for client in clients %}
-                    <tr>
-                        <td>{{ client.id }}</td>
-                        <td>{{ client.prenom }} {{ client.nom }}</td>
-                        <td>{{ client.email }}</td>
-                        <td>{{ client.telephone }}</td>
-                        <td>{{ client.zoneIntervention }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <a href="{{ path('app_client_show', {'id': client.id}) }}" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Voir
-                                </a>
-                                <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-edit"></i> Modifier
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="6">Aucun client trouvé</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    {% for client in clients %}
+                        <tr>
+                            <td>{{ client.id }}</td>
+                            <td>{{ client.prenom }} {{ client.nom }}</td>
+                            <td>{{ client.email }}</td>
+                            <td>{{ client.telephone }}</td>
+                            <td>{{ client.zoneIntervention }}</td>
+                            <td>
+                                <div class="buttons are-small">
+                                    <a href="{{ path('app_client_show', {'id': client.id}) }}" class="button is-info is-light">
+                                        <span class="icon"><i class="fas fa-eye"></i></span>
+                                        <span>Voir</span>
+                                    </a>
+                                    <a href="{{ path('app_client_edit', {'id': client.id}) }}" class="button is-primary is-light">
+                                        <span class="icon"><i class="fas fa-edit"></i></span>
+                                        <span>Modifier</span>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6" class="has-text-centered">Aucun client trouvé</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 {% endblock %}

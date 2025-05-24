@@ -1,77 +1,105 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de l'employé{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ path('app_employe_index') }}">Employés</a></li>
-            <li class="breadcrumb-item active" aria-current="page">{{ employe.prenom }} {{ employe.nom }}</li>
-        </ol>
-    </nav>
+    <section class="section">
+        <div class="container">
 
-    <div class="card">
-        <div class="card-header">
-            <h2>{{ employe.prenom }} {{ employe.nom }}</h2>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table">
-                        <tbody>
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb mb-4" aria-label="breadcrumbs">
+                <ul>
+                    <li><a href="{{ path('app_employee_index') }}">Employés</a></li>
+                    <li class="is-active"><a href="#" aria-current="page">{{ employee.prenom }} {{ employee.nom }}</a></li>
+                </ul>
+            </nav>
+
+            <!-- Employee Info Card -->
+            <div class="box">
+                <h1 class="title is-4">{{ employee.prenom }} {{ employee.nom }}</h1>
+
+                <div class="columns is-multiline">
+                    <!-- General Info -->
+                    <div class="column is-half">
+                        <h2 class="subtitle is-5">Informations générales</h2>
+                        <table class="table is-bordered is-striped is-fullwidth">
+                            <tbody>
                             <tr>
                                 <th>ID</th>
-                                <td>{{ employe.id }}</td>
+                                <td>{{ employee.id }}</td>
                             </tr>
                             <tr>
                                 <th>Prénom</th>
-                                <td>{{ employe.prenom }}</td>
+                                <td>{{ employee.prenom }}</td>
                             </tr>
                             <tr>
                                 <th>Nom</th>
-                                <td>{{ employe.nom }}</td>
+                                <td>{{ employee.nom }}</td>
                             </tr>
                             <tr>
                                 <th>Email</th>
-                                <td>{{ employe.email }}</td>
+                                <td>{{ employee.email }}</td>
                             </tr>
                             <tr>
                                 <th>Zone d'intervention</th>
-                                <td>{{ employe.zoneIntervention }}</td>
+                                <td>{{ employee.zoneIntervention ?: '—' }}</td>
                             </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-md-6">
-                    <h4>Prestations assignées</h4>
-                    {% if employe.prestations is not empty %}
-                        <ul class="list-group">
-                            {% for prestation in employe.prestations %}
-                                <li class="list-group-item">
-                                    {{ prestation.date ? prestation.date|date('d/m/Y H:i') : '' }} - 
-                                    {{ prestation.client.nom }} - 
-                                    {{ prestation.service.nom }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p>Aucune prestation assignée à cet employé.</p>
-                    {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Prestations -->
+                    <div class="column is-half">
+                        <h2 class="subtitle is-5">Prestations assignées</h2>
+                        {% if pagination.items is not empty %}
+                            <div class="content">
+                                <ul>
+                                    {% for prestation in pagination.items %}
+                                        <li class="mb-2">
+                                            <strong>{{ prestation.date ? prestation.date|date('d/m/Y H:i') : 'Date non définie' }}</strong><br>
+                                            Client : {{ prestation.client.nom }}<br>
+                                            Service : {{ prestation.service.nom }}
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                            <!-- Pagination controls -->
+                            <nav class="mt-4">
+                                {{ knp_pagination_render(pagination, 'pagination/bulma_pagination.html.twig') }}
+                            </nav>
+
+                        {% else %}
+                            <p class="has-text-grey-light">Aucune prestation assignée à cet employé.</p>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-footer">
-            <div class="btn-group">
-                <a href="{{ path('app_employe_edit', {'id': employe.id}) }}" class="btn btn-primary">
-                    <i class="fas fa-edit"></i> Modifier
+
+            <!-- Action Buttons -->
+            <div class="buttons mt-5">
+                <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="button is-info">
+                    <span class="icon"><i class="fas fa-edit"></i></span>
+                    <span>Modifier</span>
                 </a>
-                {{ include('employe/_delete_form.html.twig') }}
-                <a href="{{ path('app_employe_index') }}" class="btn btn-secondary">
-                    <i class="fas fa-arrow-left"></i> Retour à la liste
+
+                <form method="post" action="{{ path('app_employee_delete', {'id': employee.id}) }}" style="display: inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet employé ?');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ employee.id) }}">
+                    <button class="button is-danger" type="submit">
+                        <span class="icon"><i class="fas fa-trash"></i></span>
+                        <span>Supprimer</span>
+                    </button>
+                </form>
+
+                <a href="{{ path('app_employee_index') }}" class="button is-light">
+                    <span class="icon"><i class="fas fa-arrow-left"></i></span>
+                    <span>Retour à la liste</span>
                 </a>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 {% endblock %}

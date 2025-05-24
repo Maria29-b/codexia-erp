@@ -1,4 +1,36 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="field">
+        <label class="label">{{ form_label(form.nom) }}</label>
+        <div class="control">
+            {{ form_widget(form.nom, {'attr': {'class': 'input'}}) }}
+        </div>
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="field">
+        <label class="label">{{ form_label(form.description) }}</label>
+        <div class="control">
+            {{ form_widget(form.description, {'attr': {'class': 'textarea'}}) }}
+        </div>
+        {{ form_errors(form.description) }}
+    </div>
+
+    <div class="field">
+        <label class="label">{{ form_label(form.prixHoraire) }}</label>
+        <div class="control">
+            {{ form_widget(form.prixHoraire, {'attr': {'class': 'input'}}) }}
+        </div>
+        {{ form_errors(form.prixHoraire) }}
+    </div>
+
+    <div class="field">
+        <div class="control">
+            <button class="button is-primary">
+                <span class="icon">
+                    <i class="fas fa-{{ button_icon|default('save') }}"></i>
+                </span>
+                <span>{{ button_label|default('Enregistrer') }}</span>
+            </button>
+        </div>
+    </div>
 {{ form_end(form) }}

@@ -1,64 +1,124 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prestation
-{% endblock %}
+{% block title %}Détails de la prestation{% endblock %}
 
 {% block body %}
-	<h1>Prestation</h1>
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_prestation_index') }}">
+                            <span class="icon"><i class="fas fa-calendar-check"></i></span>
+                            <span>Prestations</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-info-circle"></i></span>
+                            <span>Détails de la prestation #{{ prestation.id }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-	<table class="table">
+            <div class="box">
+                <div class="level mb-5">
+                    <div class="level-left">
+                        <h1 class="title">
+                            <span class="icon-text">
+                                <span class="icon"><i class="fas fa-calendar-check"></i></span>
+                                <span>Détails de la prestation</span>
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="level-right">
+                        <span class="tag is-medium">ID: {{ prestation.id }}</span>
+                    </div>
+                </div>
 
-		
+                <div class="columns">
+                    <div class="column is-8">
+                        <div class="table-container">
+                            <table class="table is-fullwidth is-bordered is-striped">
+                                <tbody>
+                                    <tr>
+                                        <th class="is-narrow">Client</th>
+                                        <td>{{ prestation.client.prenom }} {{ prestation.client.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Employé</th>
+                                        <td>{{ prestation.employee.prenom }} {{ prestation.employee.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Service</th>
+                                        <td>{{ prestation.service.nom }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Date</th>
+                                        <td>{{ prestation.date ? prestation.date|date('d/m/Y') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Heure de début</th>
+                                        <td>{{ prestation.heureDebut ? prestation.heureDebut|date('H:i') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Durée</th>
+                                        <td>{{ prestation.duree }} minutes</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Statut</th>
+                                        <td>
+                                            <span class="tag 
+                                                {% if prestation.statut == 'planifié' %}is-info
+                                                {% elseif prestation.statut == 'terminé' %}is-success
+                                                {% elseif prestation.statut == 'annulé' %}is-danger
+                                                {% else %}is-light
+                                                {% endif %}">
+                                                {{ prestation.statut|capitalize }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>Prix Total</th>
+                                        <td>{{ prestation.prixTotal }} €</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ prestation.id }}</td>
-			</tr>
-      <tr>
-                <th>Client</th>
-                <td>{{ prestation.client.nom }} {{ prestation.client.prenom }}</td> {# Or .fullName if you have one #}
-            </tr>
-            <tr>
-                <th>Employé</th>
-                <td>{{ prestation.employee.nom }} {{ prestation.employee.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Service</th>
-                <td>{{ prestation.service.nom }}</td>
-            </tr>
-			<tr>
-				<th>Date</th>
-				<td>{{ prestation.date ? prestation.date|date('Y-m-d') : '' }}</td>
-			</tr>
-			<tr>
-				<th>HeureDebut</th>
-				<td>{{ prestation.heureDebut ? prestation.heureDebut|date('H:i:s') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Duree</th>
-				<td>{{ prestation.duree }}</td>
-			</tr>
-			<tr>
-				<th>Statut</th>
-				<td>{{ prestation.statut }}</td>
-			</tr>
-			<tr>
-				<th>PrixTotal</th>
-				<td>{{ prestation.prixTotal }}</td>
-			</tr>
-		</tbody>
-	</table>
-
-    {# Bouton pour générer le PDF #}
-		<a href="{{ path('admin_prestation_pdf', {'id': prestation.id}) }}" class="btn btn-primary">
-			<i class="fas fa-print"></i>
-			Imprimer/PDF
-		</a>
-
-	<a href="{{ path('app_prestation_index') }}">back to list</a>
-
-	<a href="{{ path('app_prestation_edit', {'id': prestation.id}) }}">edit</a>
-
-	{{ include('prestation/_delete_form.html.twig') }}
+                <div class="level mt-5">
+                    <div class="level-left">
+                        <div class="buttons">
+                            <a href="{{ path('app_prestation_index') }}" class="button is-light">
+                                <span class="icon">
+                                    <i class="fas fa-arrow-left"></i>
+                                </span>
+                                <span>Retour à la liste</span>
+                            </a>
+                            <a href="{{ path('admin_prestation_pdf', {'id': prestation.id}) }}" class="button is-info">
+                                <span class="icon">
+                                    <i class="fas fa-print"></i>
+                                </span>
+                                <span>Imprimer/PDF</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="level-right">
+                        <div class="buttons">
+                            <a href="{{ path('app_prestation_edit', {'id': prestation.id}) }}" class="button is-primary">
+                                <span class="icon">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                <span>Modifier</span>
+                            </a>
+                            {{ include('prestation/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

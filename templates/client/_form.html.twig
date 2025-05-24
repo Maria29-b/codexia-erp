@@ -1,21 +1,65 @@
-{% extends 'base.html.twig' %}
-{% block title %}Formulaire de Prestation{% endblock %}
-{% block body %}
-{{ form_start(form) }}
-    <div class="row">
-        <div class="col-md-6">
-            {{ form_row(form.prenom) }}
-            {{ form_row(form.nom) }}
-        </div>
-        <div class="col-md-6">
-            {{ form_row(form.email) }}
-            {{ form_row(form.telephone) }}
-        </div>
-    </div>
-    {{ form_row(form.zoneIntervention) }}
-    
-    <button class="btn btn-primary">
-        <i class="fas fa-save"></i> {{ button_label|default('Enregistrer') }}
-    </button>
-{{ form_end(form) }}
-{% endblock %}
+<section class="section">
+    <div class="container">
+        <h1 class="title is-4">{{ button_label|default('Créer / Modifier') }}</h1>
+
+            {{ form_start(form) }}
+
+            <div class="columns is-multiline">
+                <div class="column is-half">
+                    <div class="field">
+                        {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.prenom, {'attr': {'class': 'input'}}) }}
+                        </div>
+                        <p class="help is-danger">{{ form_errors(form.prenom) }}</p>
+                    </div>
+
+                    <div class="field">
+                        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.nom, {'attr': {'class': 'input'}}) }}
+                        </div>
+                        <p class="help is-danger">{{ form_errors(form.nom) }}</p>
+                    </div>
+                </div>
+
+                <div class="column is-half">
+                    <div class="field">
+                        {{ form_label(form.email, 'Email', {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.email, {'attr': {'class': 'input'}}) }}
+                        </div>
+                        <p class="help is-danger">{{ form_errors(form.email) }}</p>
+                    </div>
+
+                    <div class="field">
+                        {{ form_label(form.telephone, 'Téléphone', {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.telephone, {'attr': {'class': 'input'}}) }}
+                        </div>
+                        <p class="help is-danger">{{ form_errors(form.telephone) }}</p>
+                    </div>
+                </div>
+
+                <div class="column is-full">
+                    <div class="field">
+                        {{ form_label(form.zoneIntervention, 'Zone d\'intervention', {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.zoneIntervention, {'attr': {'class': 'input'}}) }}
+                        </div>
+                        <p class="help is-danger">{{ form_errors(form.zoneIntervention) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field mt-4">
+                <div class="control">
+                    <button class="button is-primary">
+                        <span class="icon"><i class="fas fa-save"></i></span>
+                        <span>{{ button_label|default('Enregistrer') }}</span>
+                    </button>
+                </div>
+            </div>
+
+            {{ form_end(form) }}        </div>
+    </section>

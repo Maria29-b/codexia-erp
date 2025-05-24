@@ -6,6 +6,7 @@ use App\Entity\Employee;
 use App\Form\EmployeType;
 use App\Repository\EmployeeRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,10 +48,16 @@ class EmployeeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_employee_show', methods: ['GET'])]
-    public function show(Employee $employee): Response
+    public function show(Employee $employee, PaginatorInterface $paginator, Request $request): Response
     {
+        $pagination = $paginator->paginate(
+            $employee->getPrestations(), // This can be an ArrayCollection or Doctrine Collection
+            $request->query->getInt('page', 1),
+            5
+        );
         return $this->render('employee/show.html.twig', [
             'employee' => $employee,
+            'pagination' => $pagination,
         ]);
     }
 

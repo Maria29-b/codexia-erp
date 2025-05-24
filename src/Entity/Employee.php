@@ -26,10 +26,10 @@ class Employee
     #[ORM\Column(length: 255)]
     private ?string $zoneIntervention = null;
 
-    #[ORM\OneToOne(inversedBy: 'employe', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(inversedBy: 'employee', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'employe', targetEntity: Prestation::class)]
+    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Prestation::class)]
     private Collection $prestations;
 
     public function __construct()

@@ -1,26 +1,65 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('app_prestation_index') }}">Employé</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarEmployee" aria-controls="navbarEmployee" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarEmployee">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('employee_dashboard') }}">Mes Prestations</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href={{ path('employee_calendar') }}>Calendrier</a>
-                </li>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                </li>
-                {# <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'admin_calendrier' %}active fw-bold{% endif %}" href="{{ path('admin_calendrier') }}">Calendrier</a>
-                </li> #}
-            </ul>
+<nav class="navbar is-light" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="{{ path('employee_dashboard') }}">
+            <span class="icon-text">
+                <span class="icon">
+                    <i class="fas fa-user-tie"></i>
+                </span>
+                <span><strong>Espace Employé</strong></span>
+            </span>
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarEmployee">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarEmployee" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item {% if app.request.get('_route') == 'employee_dashboard' %}is-active{% endif %}" 
+               href="{{ path('employee_dashboard') }}">
+                <span class="icon-text">
+                    <span class="icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </span>
+                    <span>Prochaines Prestations</span>
+                </span>
+            </a>
+
+            <a class="navbar-item {% if app.request.get('_route') == 'employee_dashboard_past' %}is-active{% endif %}" 
+               href="{{ path('employee_dashboard_past') }}">
+                <span class="icon-text">
+                    <span class="icon">
+                        <i class="fas fa-history"></i>
+                    </span>
+                    <span>Prestations Passées</span>
+                </span>
+            </a>
+
+            <a class="navbar-item {% if app.request.get('_route') == 'employee_calendar' %}is-active{% endif %}" 
+               href="{{ path('employee_calendar') }}">
+                <span class="icon-text">
+                    <span class="icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
+                    <span>Calendrier</span>
+                </span>
+            </a>
+        </div>
+
+        <div class="navbar-end">
+            <div class="navbar-item">
+                <div class="buttons">
+                    <a class="button is-light" href="{{ path('app_logout') }}">
+                        <span class="icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

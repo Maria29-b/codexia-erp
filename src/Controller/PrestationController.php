@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Dompdf\Dompdf;
 use App\Entity\Prestation;
 use App\Form\PrestationType;
 use App\Repository\PrestationRepository;
@@ -10,8 +9,10 @@ use App\Repository\ClientRepository;
 use App\Repository\EmployeeRepository;
 use App\Repository\ServiceRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -202,45 +203,6 @@ final class PrestationController extends AbstractController
         }
 
         return $this->redirectToRoute('app_prestation_index', [], Response::HTTP_SEE_OTHER);
-    }
-
-    // Ajoutez cette méthode
-
-    #[Route('/employee/prestation/{id}/complete', name: 'employee_prestation_complete')]
-    #[IsGranted('ROLE_EMPLOYE')]
-    public function markAsComplete(Request $request, Prestation $prestation, EntityManagerInterface $entityManager): Response
-    {
-        // Vérifier que l'employé a le droit de modifier cette prestation
-        $currentEmployee = $this->getUser()->getEmploye();
-        if ($prestation->getEmployee()->getId() !== $currentEmployee->getId()) {
-            throw $this->createAccessDeniedException('Vous n\'avez pas le droit de modifier cette prestation.');
-        }
-
-        // Modifier le statut
-        $prestation->setStatut('réalisé');
-        $entityManager->flush();
-
-        $this->addFlash('success', 'La prestation a été marquée comme réalisée.');
-
-        return $this->redirectToRoute('employee_calendar');
-    }
-
-    #[Route('/my-prestations', name: 'employee_my_prestations')]
-    #[IsGranted('ROLE_EMPLOYEE')]
-    public function myPrestations(
-        PrestationRepository $prestationRepository
-    ): Response {
-        $currentEmployee = $this->getUser()->getEmployee();
-
-        if (!$currentEmployee) {
-            throw $this->createNotFoundException('Aucun employé associé à cet utilisateur.');
-        }
-
-        $prestations = $prestationRepository->findByEmployee($currentEmployee);
-
-        return $this->render('prestation/my_prestations.html.twig', [
-            'prestations' => $prestations,
-        ]);
     }
 
 }

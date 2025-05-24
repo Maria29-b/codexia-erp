@@ -1,40 +1,69 @@
-{% extends 'base.html.twig' %}
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+<div class="columns">
+                <div class="column is-half">
+                    <div class="field">
+                        {{ form_label(form.prenom, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.prenom, {
+                                'attr': {
+                                    'class': 'input' ~ (form.prenom.vars.valid ? '' : ' is-danger')
+                                }
+                            }) }}
+                        </div>
+                        {% if not form.prenom.vars.valid %}
+                            <p class="help is-danger">{{ form_errors(form.prenom) }}</p>
+                        {% endif %}
+                    </div>
 
-{% block title %}Créer un client{% endblock %}
+                    <div class="field">
+                        {{ form_label(form.nom, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.nom, {
+                                'attr': {
+                                    'class': 'input' ~ (form.nom.vars.valid ? '' : ' is-danger')
+                                }
+                            }) }}
+                        </div>
+                        {% if not form.nom.vars.valid %}
+                            <p class="help is-danger">{{ form_errors(form.nom) }}</p>
+                        {% endif %}
+                    </div>
+                </div>
 
-{% block body %}
-{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': 'novalidate'}}) }}
-    <div class="row">
-        <div class="col-md-6">
-            <div class="mb-3">
-                {{ form_label(form.prenom) }}
-                {{ form_widget(form.prenom, {'attr': {'class': 'form-control' ~ (form.prenom.vars.valid ? '' : ' is-invalid')}}) }}
-                {{ form_errors(form.prenom) }}
-            </div>
-            
-            <div class="mb-3">
-                {{ form_label(form.nom) }}
-                {{ form_widget(form.nom, {'attr': {'class': 'form-control' ~ (form.nom.vars.valid ? '' : ' is-invalid')}}) }}
-                {{ form_errors(form.nom) }}
-            </div>
-        </div>
-        
-        <div class="col-md-6">
-            <div class="mb-3">
-                {{ form_label(form.email) }}
-                {{ form_widget(form.email, {'attr': {'class': 'form-control' ~ (form.email.vars.valid ? '' : ' is-invalid')}}) }}
-                {{ form_errors(form.email) }}
-            </div>
-            
-            <div class="mb-3">
-                {{ form_label(form.zoneIntervention) }}
-                {{ form_widget(form.zoneIntervention, {'attr': {'class': 'form-control' ~ (form.zoneIntervention.vars.valid ? '' : ' is-invalid')}}) }}
-                {{ form_errors(form.zoneIntervention) }}
-                <div class="form-text">Zone géographique d'intervention (optionnel)</div>
-            </div>
-        </div>
-    </div>
+                <div class="column is-half">
+                    <div class="field">
+                        {{ form_label(form.email, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.email, {
+                                'attr': {
+                                    'class': 'input' ~ (form.email.vars.valid ? '' : ' is-danger')
+                                }
+                            }) }}
+                        </div>
+                        {% if not form.email.vars.valid %}
+                            <p class="help is-danger">{{ form_errors(form.email) }}</p>
+                        {% endif %}
+                    </div>
 
-    <button class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
-{% endblock %}
+                    <div class="field">
+                        {{ form_label(form.zoneIntervention, null, {'label_attr': {'class': 'label'}}) }}
+                        <div class="control">
+                            {{ form_widget(form.zoneIntervention, {
+                                'attr': {
+                                    'class': 'input' ~ (form.zoneIntervention.vars.valid ? '' : ' is-danger')
+                                }
+                            }) }}
+                        </div>
+                        {% if not form.zoneIntervention.vars.valid %}
+                            <p class="help is-danger">{{ form_errors(form.zoneIntervention) }}</p>
+                        {% endif %}
+                        <p class="help">Zone géographique d'intervention (optionnel)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field is-grouped mt-4">
+                <div class="control">
+                    <button class="button is-primary">{{ button_label|default('Enregistrer') }}</button>
+                </div>
+            </div>            {{ form_end(form) }}

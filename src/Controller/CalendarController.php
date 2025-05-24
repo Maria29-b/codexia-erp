@@ -34,11 +34,14 @@ final class CalendarController extends AbstractController
             $end = (clone $start)->modify("+{$prestation->getDuree()} minutes");
 
             $events[] = [
+                'id' => $prestation->getId(),
                 'title' => $prestation->getService()->getNom() . ' - ' . $prestation->getClient()->getNom(),
                 'start' => $start->format('Y-m-d\TH:i:s'),
                 'end' => $end->format('Y-m-d\TH:i:s'),
-                'url' => $isAdmin ? $this->generateUrl('app_prestation_show', ['id' => $prestation->getId()]) : null,
-                'color' => $prestation->getStatut() === 'realise' ? '#28a745' : '#007bff',
+                'url' => $isAdmin ?
+                    $this->generateUrl('app_prestation_show', ['id' => $prestation->getId()]) :
+                    $this->generateUrl('employee_prestation_edit', ['id' => $prestation->getId()]),
+                'color' => $prestation->getStatut() === 'réalisé' ? '#28a745' : '#007bff',
             ];
         }
 

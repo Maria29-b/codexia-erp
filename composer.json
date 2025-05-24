@@ -10,6 +10,7 @@
         "ext-iconv": "*",
         "dompdf/dompdf": "^3.1",
         "egulias/email-validator": "^4.0",
+        "knplabs/knp-paginator-bundle": "^6.8",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2.5",

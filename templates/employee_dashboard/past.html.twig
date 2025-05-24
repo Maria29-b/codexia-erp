@@ -7,10 +7,16 @@
         <div class="container">
             <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
                 <ul>
-                    <li class="is-active">
-                        <a href="#" aria-current="page">
+                    <li>
+                        <a href="{{ path('employee_dashboard') }}">
                             <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
                             <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-history"></i></span>
+                            <span>Prestations passées</span>
                         </a>
                     </li>
                 </ul>
@@ -21,11 +27,12 @@
                     <div class="level-left">
                         <h1 class="title is-4">
                             <span class="icon-text">
-                                <span class="icon"><i class="fas fa-calendar-check"></i></span>
-                                <span>Mes Prochaines Prestations</span>
+                                <span class="icon"><i class="fas fa-history"></i></span>
+                                <span>Prestations passées</span>
                             </span>
                         </h1>
-                    </div>                    <div class="level-right">
+                    </div>
+                    <div class="level-right">
                         <a href="{{ path('employee_calendar') }}" class="button is-primary">
                             <span class="icon">
                                 <i class="fas fa-calendar-alt"></i>
@@ -44,18 +51,19 @@
                                 <th>Date & Heure</th>
                                 <th>Durée</th>
                                 <th>Service</th>
-                                <th class="has-text-right">Prix total</th>
+                                <th class="has-text-right">Prix</th>
+                                <th class="has-text-centered">Statut</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% if prestations is empty %}
                                 <tr>
-                                    <td colspan="6" class="has-text-centered">
+                                    <td colspan="7" class="has-text-centered">
                                         <p class="has-text-grey py-6">
                                             <span class="icon">
                                                 <i class="fas fa-info-circle"></i>
                                             </span>
-                                            Aucune prestation à venir trouvée pour vous.
+                                            Aucune prestation passée trouvée.
                                         </p>
                                     </td>
                                 </tr>
@@ -101,6 +109,28 @@
                                         </td>
                                         <td class="has-text-right">
                                             <strong>{{ prestation.prixTotal }} €</strong>
+                                        </td>
+                                        <td class="has-text-centered">
+                                            {% if prestation.statut != 'réalisé' %}
+                                                <form method="post" action="{{ path('employee_mark_done', {'id': prestation.id}) }}"
+                                                      onsubmit="return confirm('Confirmer la réalisation de cette prestation ?');"
+                                                      style="display: inline;">
+                                                    <input type="hidden" name="_token" value="{{ csrf_token('done' ~ prestation.id) }}">
+                                                    <button class="button is-small is-success">
+                                                        <span class="icon">
+                                                            <i class="fas fa-check"></i>
+                                                        </span>
+                                                        <span>Marquer réalisée</span>
+                                                    </button>
+                                                </form>
+                                            {% else %}
+                                                <span class="tag is-success">
+                                                    <span class="icon">
+                                                        <i class="fas fa-check"></i>
+                                                    </span>
+                                                    <span>Réalisée</span>
+                                                </span>
+                                            {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}

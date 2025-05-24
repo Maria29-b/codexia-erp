@@ -34,7 +34,7 @@ class Client
     )]
     private ?string $telephone = null;
 
-    #[ORM\OneToMany(mappedBy: 'employee', targetEntity: Prestation::class)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Prestation::class)]
     private Collection $prestations;
 
     public function getPrenom(): ?string

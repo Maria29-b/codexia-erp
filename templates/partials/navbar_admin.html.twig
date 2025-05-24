@@ -1,42 +1,58 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('admin_dashboard') }}">Admin</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarAdmin" aria-controls="navbarAdmin" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarAdmin">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+<nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{{ path('admin_dashboard') }}">
+                <strong>Admin</strong>
+            </a>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'admin_dashboard' %}active fw-bold{% endif %}" href="{{ path('admin_calendar') }}">Calendar</a>
-                </li>
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarAdmin">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'app_employee_index' %}active fw-bold{% endif %}" href="{{ path('app_employee_index') }}">Empolyé</a>
-                </li>
+        <div id="navbarAdmin" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item {% if app.request.attributes.get('_route') == 'admin_dashboard' %}is-active{% endif %}" 
+                   href="{{ path('admin_calendar') }}">
+                    <span class="icon"><i class="fas fa-calendar"></i></span>
+                    <span>Calendrier</span>
+                </a>
 
-                 <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'app_client_index' %}active fw-bold{% endif %}" href="{{ path('app_client_index') }}">Clients</a>
-                </li>
+                <a class="navbar-item {% if app.request.attributes.get('_route') == 'app_employee_index' %}is-active{% endif %}" 
+                   href="{{ path('app_employee_index') }}">
+                    <span class="icon"><i class="fas fa-users"></i></span>
+                    <span>Employés</span>
+                </a>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'app_prestation_index' %}active fw-bold{% endif %}" href="{{ path('app_prestation_index') }}">Prestations</a>
-                </li>
+                <a class="navbar-item {% if app.request.attributes.get('_route') == 'app_client_index' %}is-active{% endif %}" 
+                   href="{{ path('app_client_index') }}">
+                    <span class="icon"><i class="fas fa-user-tie"></i></span>
+                    <span>Clients</span>
+                </a>
 
-                <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'app_service_index' %}active fw-bold{% endif %}" href="{{ path('app_service_index') }}">Service</a>
-                </li>
+                <a class="navbar-item {% if app.request.attributes.get('_route') == 'app_prestation_index' %}is-active{% endif %}" 
+                   href="{{ path('app_prestation_index') }}">
+                    <span class="icon"><i class="fas fa-clipboard-list"></i></span>
+                    <span>Prestations</span>
+                </a>
 
-                {# <li class="nav-item">
-                    <a class="nav-link {% if app.request.attributes.get('_route') == 'admin_calendrier' %}active fw-bold{% endif %}" href="{{ path('admin_calendrier') }}">Calendrier</a>
-                </li> #}
-            </ul>
+                <a class="navbar-item {% if app.request.attributes.get('_route') == 'app_service_index' %}is-active{% endif %}" 
+                   href="{{ path('app_service_index') }}">
+                    <span class="icon"><i class="fas fa-concierge-bell"></i></span>
+                    <span>Services</span>
+                </a>
+            </div>
 
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                </li>
-            </ul>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <a class="button is-light is-outlined" href="{{ path('app_logout') }}">
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span>Déconnexion</span>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </nav>

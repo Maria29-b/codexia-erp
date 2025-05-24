@@ -39,7 +39,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $nom = null;
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Employee $employe = null;
+    private ?Employee $employee = null;
 
     #[ORM\OneToMany(mappedBy: 'auteur', targetEntity: Commentaire::class)]
     private Collection $commentaires;
@@ -77,12 +77,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
     public function getEmploye(): ?Employee
     {
-        return $this->employe;
+        return $this->employee;
     }
 
-    public function setEmploye(?Employee $employe): void
+    public function setEmployee(?Employee $employee): void
     {
-        $this->employe = $employe;
+        $this->employee = $employee;
     }
 
     public function getCommentaires(): Collection

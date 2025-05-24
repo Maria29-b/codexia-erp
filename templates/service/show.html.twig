@@ -3,32 +3,77 @@
 {% block title %}Service{% endblock %}
 
 {% block body %}
-    <h1>Service</h1>
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_service_index') }}">
+                            <span class="icon"><i class="fas fa-concierge-bell"></i></span>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-cog"></i></span>
+                            <span>{{ service.nom }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ service.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ service.nom }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ service.description }}</td>
-            </tr>
-            <tr>
-                <th>PrixHoraire</th>
-                <td>{{ service.prixHoraire }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <div class="box">
+                <div class="level mb-4">
+                    <div class="level-left">
+                        <h2 class="title is-4">
+                            <span class="icon-text">
+                                <span class="icon"><i class="fas fa-cog"></i></span>
+                                <span>{{ service.nom }}</span>
+                            </span>
+                        </h2>
+                    </div>
+                    <div class="level-right">
+                        <span class="tag is-medium">ID: {{ service.id }}</span>
+                    </div>
+                </div>
 
-    <a href="{{ path('app_service_index') }}">back to list</a>
+                <div class="content">
+                    <table class="table is-fullwidth">
+                        <tbody>
+                            <tr>
+                                <th style="width: 200px;">Description</th>
+                                <td>{{ service.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Prix horaire</th>
+                                <td>{{ service.prixHoraire }} €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-    <a href="{{ path('app_service_edit', {'id': service.id}) }}">edit</a>
-
-    {{ include('service/_delete_form.html.twig') }}
+                <div class="level mt-5">
+                    <div class="level-left">
+                        <a href="{{ path('app_service_index') }}" class="button is-light">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span>Retour à la liste</span>
+                        </a>
+                    </div>
+                    <div class="level-right">
+                        <div class="buttons">
+                            <a href="{{ path('app_service_edit', {'id': service.id}) }}" class="button is-primary">
+                                <span class="icon">
+                                    <i class="fas fa-edit"></i>
+                                </span>
+                                <span>Modifier</span>
+                            </a>
+                            {{ include('service/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}

@@ -3,19 +3,56 @@
 {% block title %}Modifier la prestation{% endblock %}
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="mb-4">Modifier la prestation</h1>
+    <section class="section">
+        <div class="container">
+            <nav class="breadcrumb mb-5" aria-label="breadcrumbs">
+                <ul>
+                    <li>
+                        <a href="{{ path('app_prestation_index') }}">
+                            <span class="icon"><i class="fas fa-calendar-check"></i></span>
+                            <span>Prestations</span>
+                        </a>
+                    </li>
+                    <li class="is-active">
+                        <a href="#" aria-current="page">
+                            <span class="icon"><i class="fas fa-edit"></i></span>
+                            <span>Modifier la prestation #{{ prestation.id }}</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
-        <div class="card shadow-sm p-4">
-            {{ include('prestation/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            <div class="box">
+                <div class="level mb-5">
+                    <div class="level-left">
+                        <h1 class="title">
+                            <span class="icon-text">
+                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                <span>Modifier la prestation</span>
+                            </span>
+                        </h1>
+                    </div>
+                    <div class="level-right">
+                        <span class="tag is-medium">ID: {{ prestation.id }}</span>
+                    </div>
+                </div>
+
+                {{ include('prestation/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+                <div class="level mt-5">
+                    <div class="level-left">
+                        <a href="{{ path('app_prestation_index') }}" class="button is-light">
+                            <span class="icon">
+                                <i class="fas fa-arrow-left"></i>
+                            </span>
+                            <span>Retour à la liste</span>
+                        </a>
+                    </div>
+                    <div class="level-right">
+                        {{ include('prestation/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div class="d-flex justify-content-between mt-3">
-            <a href="{{ path('app_prestation_index') }}" class="btn btn-secondary">
-                ← Retour à la liste
-            </a>
-
-            {{ include('prestation/_delete_form.html.twig') }}
-        </div>
-    </div>
+    </section>
 {% endblock %}

@@ -3,11 +3,29 @@
 {% block title %}Calendrier des prestations{% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css">
+    {{ parent() }}
     <style>
-        #calendar-container {
-            margin: 20px auto;
-            max-width: 1000px;
+        .box {
+            padding: 1.5rem;
+            height: 800px;
+        }
+        .fc {
+            height: 100%;
+        }
+        .fc .fc-toolbar-title {
+            font-size: 1.5rem;
+        }
+        .fc .fc-button {
+            background-color: #3273dc;
+            border-color: transparent;
+            color: #fff;
+        }
+        .fc .fc-button:hover {
+            background-color: #2366d1;
+        }
+        .fc .fc-button-primary:not(:disabled).fc-button-active,
+        .fc .fc-button-primary:not(:disabled):active {
+            background-color: #2160c4;
         }
         .filters {
             margin-bottom: 20px;
@@ -52,71 +70,39 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Calendrier des prestations</h1>
+    <section class="section">
+        <div class="container">
+            <h1 class="title">Calendrier des prestations</h1>
 
-        <div id="calendar-container">
-            <div id="calendar"></div>
+            <div class="box">
+                <div id="calendar"></div>
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/locales/fr.js"></script>
+    {{ parent() }}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialiser le calendrier
-            const calendarEl = document.getElementById('calendar');
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                locale: 'fr',
-                timeZone: 'local',
-                editable: false,
-                selectable: false,
-                eventSources: [
-                    {
-                        url: '{{ path('calendar_events') }}',  // Use the 'calendar_events' route
-                        method: 'GET',
-                        failure: function() {
-                            alert('Erreur lors du chargement des prestations');
-                        }
-                    }
-                ],
-                eventClick: function(info) {
-                    // Afficher les détails de l'événement
-                    const event = info.event;
-                    const props = event.extendedProps;
-
-                    document.getElementById('detail-title').textContent = event.title;
-                    document.getElementById('detail-client').textContent = props.client;
-                    document.getElementById('detail-adresse').textContent = props.adresse;
-                    document.getElementById('detail-employe').textContent = props.employe;
-                    document.getElementById('detail-service').textContent = props.service;
-
-                    const startDate = new Date(event.start);
-                    document.getElementById('detail-date').textContent = startDate.toLocaleDateString('fr-FR');
-                    document.getElementById('detail-heure').textContent = startDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('detail-duree').textContent = props.duree;
-                    document.getElementById('detail-prix').textContent = props.prixTotal;
-                    document.getElementById('detail-statut').textContent = props.statut;
-
-                    // Mettre à jour le lien pour éditer
-                    document.getElementById('edit-link').href = '/admin/prestation/' + event.id + '/edit';
-
-                    // Afficher la modal
-                    document.getElementById('overlay').style.display = 'block';
-                    document.getElementById('event-details').style.display = 'block';
-                }
-            });
-
-            calendar.render();
-
+            var calendarEl = document.getElementById('calendar');
+            if (calendarEl) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    height: '100%',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    locale: 'fr-fr',
+                    timeZone: 'Europe/Paris',
+                    editable: false,
+                    selectable: false,
+                    events: '{{ path('calendar_events') }}'
+                });
+                calendar.render();
+            }
         });
     </script>
 {% endblock %}

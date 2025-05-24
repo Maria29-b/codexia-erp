@@ -2,53 +2,68 @@
 
 {% block title %}Liste des employés{% endblock %}
 
-{% block body %}
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1>Liste des employés</h1>
-        <a href="{{ path('app_employee_new') }}" class="btn btn-success">
-            <i class="fas fa-plus"></i> Ajouter un employé
-        </a>
-    </div>
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
 
-    <div class="card">
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nom complet</th>
-                        <th>Email</th>
-                        <th>Zone d'intervention</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for employee in employees %}
-                    <tr>
-                        <td>{{ employee.id }}</td>
-                        <td>{{ employee.prenom }} {{ employee.nom }}</td>
-                        <td>{{ employee.email }}</td>
-                        <td>{{ employee.zoneIntervention }}</td>
-                        <td>
-                            <div class="btn-group">
-                                <a href="{{ path('app_employee_show', {'id': employee.id}) }}" class="btn btn-sm btn-info">
-                                    <i class="fas fa-eye"></i> Voir
-                                </a>
-                                <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-edit"></i> Modifier
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="5">Aucun employé trouvé</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+{% block body %}
+    <section class="section">
+        <div class="container">
+            <div class="level mb-5">
+                <div class="level-left">
+                    <h1 class="title">Liste des employés</h1>
+                </div>
+                <div class="level-right">
+                    <a href="{{ path('app_employee_new') }}" class="button is-success">
+                        <span class="icon"><i class="fas fa-plus"></i></span>
+                        <span>Ajouter un employé</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-content">
+                    <div class="table-container">
+                        <table class="table is-striped is-hoverable is-fullwidth">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nom complet</th>
+                                <th>Email</th>
+                                <th>Zone d'intervention</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for employee in employees %}
+                                <tr>
+                                    <td>{{ employee.id }}</td>
+                                    <td>{{ employee.prenom }} {{ employee.nom }}</td>
+                                    <td>{{ employee.email }}</td>
+                                    <td>{{ employee.zoneIntervention }}</td>
+                                    <td>
+                                        <div class="buttons">
+                                            <a href="{{ path('app_employee_show', {'id': employee.id}) }}" class="button is-small is-info">
+                                                <span class="icon"><i class="fas fa-eye"></i></span>
+                                                <span>Voir</span>
+                                            </a>
+                                            <a href="{{ path('app_employee_edit', {'id': employee.id}) }}" class="button is-small is-primary">
+                                                <span class="icon"><i class="fas fa-edit"></i></span>
+                                                <span>Modifier</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="has-text-centered">Aucun employé trouvé</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </section>
 {% endblock %}

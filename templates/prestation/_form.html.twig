@@ -1,25 +1,47 @@
 {{ form_start(form) }}
-<div class="row">
+<div class="columns is-multiline">
     {% for field in form %}
         {% if field.vars.name != '_token' %}
-            <div class="mb-3 col-md-6">
-                {{ form_label(field, null, {'label_attr': {'class': 'form-label'}}) }}
-                {{ form_widget(field, {'attr': {'class': 'form-control', 'id': field.vars.name }}) }}
-                {{ form_errors(field) }}
+            <div class="column is-half">
+                <div class="field">
+                    {{ form_label(field, null, {'label_attr': {'class': 'label'}}) }}
+                    <div class="control">
+                        {{ form_widget(field, {
+                            'attr': {
+                                'class': 'input' ~ (field.vars.name == 'service' or field.vars.name == 'client' or field.vars.name == 'employee' or field.vars.name == 'statut' ? ' select' : ''),
+                                'id': field.vars.name
+                            }
+                        }) }}
+                    </div>
+                    {% if not field.vars.valid %}
+                        <p class="help is-danger">{{ form_errors(field) }}</p>
+                    {% endif %}
+                </div>
             </div>
         {% endif %}
     {% endfor %}
 
-    {# ➕ Prix Total Display (disabled input, calculated from JS) #}
-    <div class="mb-3 col-md-6">
-        <label for="prixTotal" class="form-label">Prix total (€) (calculé automatiquement)</label>
-        <input type="text" id="prixTotal" class="form-control" value="" disabled>
+    {# Prix Total Display #}
+    <div class="column is-half">
+        <div class="field">
+            <label class="label" for="prixTotal">Prix total (€) (calculé automatiquement)</label>
+            <div class="control">
+                <input type="text" id="prixTotal" class="input" value="" disabled>
+            </div>
+        </div>
     </div>
 </div>
 
-<button class="btn btn-primary">
-    {{ button_label|default('Enregistrer') }}
-</button>
+<div class="field mt-5">
+    <div class="control">
+        <button class="button is-primary">
+            <span class="icon">
+                <i class="fas fa-save"></i>
+            </span>
+            <span>{{ button_label|default('Enregistrer') }}</span>
+        </button>
+    </div>
+</div>
 {{ form_end(form) }}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
